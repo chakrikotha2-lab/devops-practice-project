@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DevOps Practice Project</title>
+</head>
+<body>
+  <h1>Frontend is Running</h1>
+  <p>Backend Status:</p>
+  <h2 id="status">Checking backend...</h2>
+
+  <script>
+    fetch("/api")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("status").innerText = data;
+      })
+      .catch(() => {
+        document.getElementById("status").innerText = "Backend not reachable";
+      });
+  </script>
+</body>
+</html>
+
