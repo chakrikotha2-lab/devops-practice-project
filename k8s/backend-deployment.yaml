@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: node:18
+        ports:
+        - containerPort: 5000
+        env:
+        - name: MESSAGE
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: MESSAGE
+        args:
+        - -e
+        - |
+          const http = require('http');
+          const message = process.env.MESSAGE || 'Default message';
+
+          http.createServer((req, res) => {
+            res.end(message + ' | Pod: ' + process.env.HOSTNAME);
+          }).listen(5000);
+
+          console.log('Server running on port 5000');

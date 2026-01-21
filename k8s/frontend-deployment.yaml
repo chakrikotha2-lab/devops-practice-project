@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: node:18
+        ports:
+        - containerPort: 3000
+        args:
+        - -e
+        - |
+          const http = require('http');
+
+          const server = http.createServer((req, res) => {
+            http.get('http://backend-service:5000', backendRes => {
+              let data = '';
+              backendRes.on('data', chunk => data += chunk);
+              backendRes.on('end', () => {
+                res.end('Frontend -> ' + data);
+              });
+            });
+          });
+
+          server.listen(3000);
+          console.log('Frontend running on port 3000');
