@@ -1,0 +1,21 @@
+name: DevOps CI Pipeline
+
+on:
+  push:
+    branches:
+      - chakri
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Show files
+        run: ls -la
+
+      - name: Run dummy script
+        run: echo "Hello DevOps! Pipeline is running 🚀"
