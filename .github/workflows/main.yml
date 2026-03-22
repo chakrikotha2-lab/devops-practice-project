@@ -18,4 +18,5 @@ jobs:
         run: ls -la
 
       - name: Run dummy script
+      hi
         run: echo "Hello DevOps! Pipeline is running 🚀"
